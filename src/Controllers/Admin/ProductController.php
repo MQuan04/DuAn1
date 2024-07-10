@@ -122,7 +122,7 @@ class ProductController extends Controller {
         $categories = (new Category())->all();
 
         $arrayCategoryIdName = [];
-        foreach ($categories as $category) {
+        foreach ($categories as $category) { 
             $arrayCategoryIdName[$category['id']] = $category['name'];
         }
 
