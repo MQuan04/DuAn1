@@ -4,6 +4,7 @@ use Minhquan\Asm\Controllers\Admin\UserController;
 use Minhquan\Asm\Controllers\Admin\CategoryController;
 use Minhquan\Asm\Controllers\Admin\DashboardController;
 use Minhquan\Asm\Controllers\Admin\ProductController;
+use Minhquan\Asm\Controllers\Admin\OrderController as AdminOrderController;
 use Minhquan\Asm\Controllers\Client\HomeController;
 use Minhquan\Asm\Router;
 
@@ -28,3 +29,9 @@ $router->addRoute('/admin/products/create', ProductController::class, 'create');
 $router->addRoute('/admin/products/update', ProductController::class, 'update');
 $router->addRoute('/admin/products/detail', ProductController::class, 'detail');
 $router->addRoute('/admin/products/delete', ProductController::class, 'delete');
+
+// Thêm các route cho quản lý đơn hàng
+$router->addRoute('/admin/orders', AdminOrderController::class, 'index');
+$router->addRoute('/admin/orders/detail', AdminOrderController::class, 'detail');
+$router->addRoute('/admin/orders/update', AdminOrderController::class, 'update');
+$router->addRoute('/admin/orders/delete', AdminOrderController::class, 'delete');

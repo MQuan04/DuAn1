@@ -54,6 +54,8 @@ class Model
         return $stmt->fetchAll();
     }
 
+    
+
     public function paginate($page = 1, $perPage = 10)
     {
         $sql = "SELECT * FROM {$this->table} LIMIT {$perPage} OFFSET (({$page} - 1) * {$perPage})";

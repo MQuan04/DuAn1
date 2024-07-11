@@ -56,11 +56,11 @@
                                                         <td><?= $user['name'] ?></td>
                                                         <td><?= $user['email'] ?></td>
                                                         <td><?= $user['address'] ?></td>
-                                                        <td>
+                                                        <td style="width: 1px;" class="text-nowrap">
                                                             <a href="/admin/users/update?id=<?= $user['id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
 
-                                                            <form action="/admin/users/delete?id=<?= $user['id'] ?>" method="post">
-                                                                <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm mt-2">Xóa</button>
+                                                            <form action="/admin/users/delete?id=<?= $user['id'] ?>" method="post" style="display:inline;">
+                                                                <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm ">Xóa</button>
                                                             </form>
                                                         </td>
                                                     </tr>

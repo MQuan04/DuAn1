@@ -56,20 +56,20 @@ $products = $data['products'];
                                             <tbody>
                                                 <?php foreach ($products as $product) : ?>
                                                     <tr>
-                                                        <td><?= htmlspecialchars($product['id']) ?></td>
+                                                        <td><?= ($product['id']) ?></td>
                                                         <td>
-                                                            <img src="<?= htmlspecialchars($product['img']) ?>" alt="" width="100px">
+                                                            <img src="<?= ($product['img']) ?>" alt="" width="100px">
                                                         </td>
-                                                        <td><?= htmlspecialchars($product['name']) ?></td>
-                                                        <td><?= htmlspecialchars($product['price']) ?></td>
-                                                        <td><?= htmlspecialchars($arrayCategoryIdName[$product['category_id']]) ?></td>
+                                                        <td><?= ($product['name']) ?></td>
+                                                        <td><?= ($product['price']) ?></td>
+                                                        <td><?= ($arrayCategoryIdName[$product['category_id']]) ?></td>
                                                         <td><?= $product['is_active'] ? 'Yes' : 'No' ?></td>
-                                                        <td class="text-wrap"><?= nl2br(htmlspecialchars($product['description'])) ?></td>
+                                                        <td class="text-wrap"><?= nl2br(($product['description'])) ?></td>
                                                         <td style="width: 1px;" class="text-nowrap">
                                                             <a href="/admin/products/update?id=<?= $product['id'] ?>" class="btn btn-primary btn-sm">Cập nhật</a>
                                                             <a href="/admin/products/detail?id=<?= $product['id'] ?>" class="btn btn-sm btn-secondary">Chi tiết</a>
                                                             <form action="/admin/products/delete?id=<?= $product['id'] ?>" method="post" style="display:inline;">
-                                                                <input type="hidden" name="img" value="<?= htmlspecialchars($product['img']) ?>">
+                                                                <input type="hidden" name="img" value="<?= ($product['img']) ?>">
                                                                 <button type="submit" onclick="return confirm('Bạn có chắc chắn xóa?');" class="btn btn-danger btn-sm">Xóa</button>
                                                             </form>
                                                         </td>

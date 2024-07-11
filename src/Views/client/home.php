@@ -12,7 +12,7 @@
         <?php foreach ($latestProducts as $product): ?>
             <li>
                 <h2><?= $product['p_name'] ?></h2>
-                <img height="400px" src="<?= $product['p_img'] ?>" alt="<?= $product['p_name'] ?>">
+                <img height="150px" src="<?= $product['p_img'] ?>" alt="<?= $product['p_name'] ?>">
                 <p>Giá: <?= $product['p_price'] ?></p>
                 <!-- Thêm thông tin chi tiết khác nếu cần -->
             </li>
