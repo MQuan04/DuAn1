@@ -12,9 +12,22 @@ class ChiTietDonHang extends Model {
         return parent::all($column);
     }
 
-    public function findByOrderId($orderId) {
-        $stmt = $this->conn->prepare("SELECT * FROM {$this->table} WHERE id = ?");
-        $stmt->execute([$orderId]);
+    public function findByOrderId($id_don_hang)
+    {
+        $sql = "SELECT * FROM {$this->table} WHERE id_don_hang = :id_don_hang";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id_don_hang', $id_don_hang, \PDO::PARAM_INT);
+        $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public function deleteByOrderId($id_don_hang)
+    {
+        $sql = "DELETE FROM {$this->table} WHERE id_don_hang = :id_don_hang";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id_don_hang', $id_don_hang, \PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    
 }

@@ -6,8 +6,7 @@ class Model
 {
     protected $conn;
     protected $table;
-
-    protected $columns;
+    protected $columns = []; // Khai báo mảng columns để sử dụng trong các phương thức CRUD
 
     public function __construct()
     {
@@ -31,14 +30,9 @@ class Model
         $sql = "SELECT * FROM {$this->table} WHERE id = :id LIMIT 1";
 
         $stmt = $this->conn->prepare($sql);
-
         $stmt->bindParam(':id', $id);
-
         $stmt->execute();
-
-        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
-
-        return $stmt->fetch();
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function all($column = 'id')
@@ -46,82 +40,41 @@ class Model
         $sql = "SELECT * FROM {$this->table} ORDER BY {$column} DESC";
 
         $stmt = $this->conn->prepare($sql);
-
         $stmt->execute();
-
-        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
-
-        return $stmt->fetchAll();
-    }
-
-    
-
-    public function paginate($page = 1, $perPage = 10)
-    {
-        $sql = "SELECT * FROM {$this->table} LIMIT {$perPage} OFFSET (({$page} - 1) * {$perPage})";
-
-        $stmt = $this->conn->prepare($sql);
-
-        $stmt->execute();
-
-        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
-
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function insert($data)
     {
-        $sql = "INSERT INTO {$this->table}";
-
-        $columns = implode(", ", $this->columns);
-        $sql .= "({$columns}) VALUES ";
-
-        $values = [];
-        foreach ($this->columns as $column) {
-            $values[] = ":{$column}";
-        }
-        $values = implode(", ", $values);
-        $sql .= "({$values})";
+        $sql = "INSERT INTO {$this->table} (" . implode(", ", array_keys($data)) . ") VALUES (:" . implode(", :", array_keys($data)) . ")";
 
         $stmt = $this->conn->prepare($sql);
 
         foreach ($data as $key => &$value) {
-            if (in_array($key, $this->columns)) {
-                $stmt->bindParam(":{$key}", $value);
-            }
+            $stmt->bindParam(":{$key}", $value);
         }
 
         $stmt->execute();
     }
 
-    /* 
-        $data = [
-            'collumn_name' => 'giá trị người dùng truyền vào',
-        ];
-
-        $conditions = [
-            ['collumn_name', 'toán tử so sánh', 'giá trị người dùng truyền vào', 'AND hoặc OR'],
-            ['collumn_name', 'toán tử so sánh', 'giá trị người dùng truyền vào']
-        ];
-    */
     public function update($data, $conditions = [])
     {
-        $sql = "UPDATE {$this->table} SET ";
-
-        $sets = [];
-        foreach ($this->columns as $column) {
-            $sets[] = "{$column} = :{$column}";
+        $set = [];
+        foreach ($data as $key => $value) {
+            if (in_array($key, $this->columns)) {
+                $set[] = "{$key} = :{$key}";
+            }
         }
-        $sets = implode(", ", $sets);
-        $sql .= "{$sets}";
+        $set = implode(", ", $set);
 
         $where = [];
         foreach ($conditions as $condition) {
-            $link = $condition[3] ?? '';
-            $where[] = "{$condition[0]} {$condition[1]} :w{$condition[0]} {$link}";
+            $link = isset($condition[3]) ? $condition[3] : '';
+            $where[] = "{$condition[0]} {$condition[1]} :w_{$condition[0]} {$link}";
         }
         $where = implode(" ", $where);
-        $sql .= " WHERE {$where}";
+
+        $sql = "UPDATE {$this->table} SET {$set} WHERE {$where}";
 
         $stmt = $this->conn->prepare($sql);
 
@@ -132,7 +85,7 @@ class Model
         }
 
         foreach ($conditions as &$condition) {
-            $stmt->bindParam(":w{$condition[0]}", $condition[2]);
+            $stmt->bindParam(":w_{$condition[0]}", $condition[2]);
         }
 
         $stmt->execute();
@@ -140,20 +93,19 @@ class Model
 
     public function delete($conditions = [])
     {
-        $sql = "DELETE FROM {$this->table} WHERE ";
-
         $where = [];
         foreach ($conditions as $condition) {
-            $link = $condition[3] ?? '';
-            $where[] = "{$condition[0]} {$condition[1]} :w{$condition[0]} {$link}";
+            $link = isset($condition[3]) ? $condition[3] : '';
+            $where[] = "{$condition[0]} {$condition[1]} :w_{$condition[0]} {$link}";
         }
         $where = implode(" ", $where);
-        $sql .= "{$where}";
+
+        $sql = "DELETE FROM {$this->table} WHERE {$where}";
 
         $stmt = $this->conn->prepare($sql);
 
         foreach ($conditions as &$condition) {
-            $stmt->bindParam(":w{$condition[0]}", $condition[2]);
+            $stmt->bindParam(":w_{$condition[0]}", $condition[2]);
         }
 
         $stmt->execute();

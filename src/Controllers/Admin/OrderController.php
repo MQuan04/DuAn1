@@ -26,13 +26,20 @@ class OrderController extends Controller {
         (new DonHang())->updateStatus($id, $trang_thai);
         header("Location: /admin/orders/detail?id=$id");
     }
-
-    public function delete() {
-        $id = $_POST['id'];
-        $don_hang = (new DonHang())->find($id);
-        if ($don_hang['trang_thai'] == 'huy' || $don_hang['trang_thai'] == 'error') {
-            (new DonHang())->delete(['id' => $id]);
+    public function delete()
+    {
+        $id = $_GET['id'] ?? null;
+        
+        if ($id) {
+            $chi_tiet_don_hang_model = new ChiTietDonHang();
+            $chi_tiet_don_hang_model->deleteByOrderId($id);
+    
+            $don_hang_model = new DonHang();
+            $don_hang_model->delete([['id', '=', $id]]);
         }
-        header("Location: /admin/orders");
+        
+        header('/admin/orders');
     }
+
+    
 }
