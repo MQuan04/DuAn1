@@ -2,7 +2,9 @@
 
 namespace Minhquan\Asm\Models;
 
+use PDO;
 use Minhquan\Asm\Model;
+require_once 'global.php';
 
 class User extends Model
 {
@@ -12,6 +14,7 @@ class User extends Model
         'email',
         'address',
         'password',
+        'role'
     ];
 
     public function getUserByEmailPassword($email, $password)
@@ -34,7 +37,7 @@ class User extends Model
 
         $stmt->execute();
 
-        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
         return $stmt->fetch();
     }

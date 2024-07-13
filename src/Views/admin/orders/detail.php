@@ -91,8 +91,8 @@ $chi_tiet_don_hang = $data['chi_tiet_don_hang'];
                                             </select>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Cập nhật trạng thái</button>
+                                        <a href="/admin/orders" class="btn btn-secondary btn-sm">Quay lại</a>
                                     </form>
-                                    <a href="/admin/orders" class="btn btn-secondary btn-sm">Quay lại</a>
                                 </div>
                             </div>
                         </div>

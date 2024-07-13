@@ -5,6 +5,7 @@ use Minhquan\Asm\Controllers\Admin\CategoryController;
 use Minhquan\Asm\Controllers\Admin\DashboardController;
 use Minhquan\Asm\Controllers\Admin\ProductController;
 use Minhquan\Asm\Controllers\Admin\OrderController as AdminOrderController;
+use Minhquan\Asm\Controllers\Auth\AuthController;
 use Minhquan\Asm\Controllers\Client\HomeController;
 use Minhquan\Asm\Router;
 
@@ -13,6 +14,10 @@ $router = new Router();
 $router->addRoute('/', HomeController::class, 'index');
 
 $router->addRoute('/admin/dashboard', DashboardController::class, 'index');
+
+$router->addRoute('/login', AuthController::class, 'showLoginForm');
+$router->addRoute('/login', AuthController::class, 'login', 'POST');
+$router->addRoute('/logout', AuthController::class, 'logout');
 
 $router->addRoute('/admin/users', UserController::class, 'index');
 $router->addRoute('/admin/users/create', UserController::class, 'create');
